@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { useState } from "react";
 
@@ -12,6 +11,10 @@ function App() {
 
   const handleClear = () => {
     setInput("");
+  };
+
+  const handleBackspace = () => {
+    setInput((prev) => prev.slice(0, -1)); // Menghapus karakter terakhir
   };
 
   const handleEquals = () => {
@@ -58,6 +61,9 @@ function App() {
               {btn}
             </button>
           ))}
+          <button className="button" onClick={handleBackspace}>
+            ⌫
+          </button>
           <button className="button equal" onClick={handleEquals}>
             =
           </button>
