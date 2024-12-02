@@ -2,28 +2,52 @@ import "./App.css";
 import { useState } from "react";
 
 function App() {
-  const [input, setInput] = useState("");
-  const [isBlinking, setIsBlinking] = useState(false);
+  const [input1, setInput1] = useState(""); // Operand pertama
+  const [input2, setInput2] = useState(""); // Operand kedua
+  const [operator, setOperator] = useState(""); // Operator yang dipilih
+  const [result, setResult] = useState(""); // Hasil perhitungan
 
-  const handleClick = (value) => {
-    setInput((prev) => prev + value);
+  const handleNumberClick = (value) => {
+    if (operator) {
+      // Jika operator sudah dipilih, tambahkan angka ke input2
+      setInput2((prev) => prev + value);
+    } else {
+      // Jika belum ada operator, tambahkan angka ke input1
+      setInput1((prev) => prev + value);
+    }
+  };
+
+  const handleOperatorClick = (op) => {
+    if (input1) setOperator(op); // Tetapkan operator jika input1 sudah ada
   };
 
   const handleClear = () => {
-    setInput("");
+    setInput1("");
+    setInput2("");
+    setOperator("");
+    setResult("");
   };
 
   const handleBackspace = () => {
-    setInput((prev) => prev.slice(0, -1)); // Menghapus karakter terakhir
+    if (result) {
+      setResult("");
+    } else if (input2) {
+      setInput2((prev) => prev.slice(0, -1));
+    } else if (operator) {
+      setOperator("");
+    } else if (input1) {
+      setInput1((prev) => prev.slice(0, -1));
+    }
   };
 
   const handleEquals = () => {
-    try {
-      setInput(eval(input).toString());
-      setIsBlinking(true);
-      setTimeout(() => setIsBlinking(false), 500);
-    } catch {
-      setInput("Error");
+    if (input1 && operator && input2) {
+      try {
+        const calculation = eval(`${input1}${operator}${input2}`);
+        setResult(calculation.toString());
+      } catch {
+        setResult("Error");
+      }
     }
   };
   return (
@@ -31,8 +55,11 @@ function App() {
       <h1>Kalkulator Sederhana</h1>
 
       <div className="calculator">
-        <div className={`display ${isBlinking ? "blink" : ""}`}>
-          {input || "0"}
+        <div className="display">{input1}</div>
+        <div className="display">{operator}</div>
+        <div className="display">{input2}</div>
+        <div className="display" style={{ width: "100%" }}>
+          {result ? `Result ${result}` : "Result 0"}
         </div>
         <div className="buttons">
           {[
@@ -50,19 +77,23 @@ function App() {
             "-",
             "0",
             ".",
-            "C",
             "+",
           ].map((btn, i) => (
             <button
               key={i}
               className="button"
-              onClick={() => (btn === "C" ? handleClear() : handleClick(btn))}
+              onClick={() =>
+                isNaN(btn) ? handleOperatorClick(btn) : handleNumberClick(btn)
+              }
             >
               {btn}
             </button>
           ))}
           <button className="button" onClick={handleBackspace}>
             ⌫
+          </button>
+          <button className="button" onClick={handleClear}>
+            C
           </button>
           <button className="button equal" onClick={handleEquals}>
             =

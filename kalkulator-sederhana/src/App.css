@@ -198,10 +198,16 @@ body {
   height: 80px;
   background-color: #222;
   color: #fff;
-  font-size: 2em;
+  font-size: 1.8em;
   text-align: right;
   padding: 20px;
   box-sizing: border-box;
+  overflow: hidden;
+}
+
+.display span {
+  display: inline-block;
+  margin-right: 5px;
 }
 
 .display.blink {
