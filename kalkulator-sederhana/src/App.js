@@ -4,6 +4,7 @@ import { useState } from "react";
 
 function App() {
   const [input, setInput] = useState("");
+  const [isBlinking, setIsBlinking] = useState(false);
 
   const handleClick = (value) => {
     setInput((prev) => prev + value);
@@ -16,6 +17,8 @@ function App() {
   const handleEquals = () => {
     try {
       setInput(eval(input).toString());
+      setIsBlinking(true);
+      setTimeout(() => setIsBlinking(false), 500);
     } catch {
       setInput("Error");
     }
@@ -25,7 +28,9 @@ function App() {
       <h1>Kalkulator Sederhana</h1>
 
       <div className="calculator">
-        <div className="display">{input || "0"}</div>
+        <div className={`display ${isBlinking ? "blink" : ""}`}>
+          {input || "0"}
+        </div>
         <div className="buttons">
           {[
             "7",

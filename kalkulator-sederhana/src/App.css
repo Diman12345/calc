@@ -148,6 +148,31 @@ button:active {
 } */
 
 /* App.css */
+
+@keyframes buttonPress {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes displayBlink {
+  0% {
+    background-color: #222;
+  }
+  50% {
+    background-color: #555;
+  }
+  100% {
+    background-color: #222;
+  }
+}
+
 body {
   display: flex;
   justify-content: center;
@@ -179,6 +204,10 @@ body {
   box-sizing: border-box;
 }
 
+.display.blink {
+  animation: displayBlink 0.5s ease;
+}
+
 .buttons {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -200,6 +229,7 @@ body {
 .button:active {
   transform: scale(0.9);
   background-color: #ddd;
+  animation: buttonPress 0.2s ease;
 }
 
 .equal {
